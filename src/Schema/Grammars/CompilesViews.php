@@ -18,11 +18,16 @@ trait CompilesViews
     {
         $orReplaceSql = $orReplace ? 'or replace ' : '';
 
-        $materializedSql = $materialized ? 'materialized ' : '';
+        $materializedSql = $this->deriveMaterializedSql($materialized);
 
         $columns = $columns ? '('.$this->columnize($columns).') ' : '';
 
         return 'create '.$orReplaceSql.$materializedSql.'view '.$this->wrapTable($name).' '.$columns.'as '.$query;
+    }
+
+    protected function deriveMaterializedSql(bool $materialized = false)
+    {
+        return $materialized ? 'materialized ' : '';
     }
 
     /**
